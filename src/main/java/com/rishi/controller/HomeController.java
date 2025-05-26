@@ -15,10 +15,10 @@ public class HomeController {
     }*/
 
     //Create API
-    @GetMapping
-    public ApiResponse HomeControllerHandler(){
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setMessage("Welcome to ecommerce Website");
-        return apiResponse;
-    }
+//    @GetMapping
+//    public ApiResponse HomeControllerHandler(){
+//        ApiResponse apiResponse = new ApiResponse();
+//        apiResponse.setMessage("Welcome to ecommerce Website");
+//        return apiResponse;
+//    }
 }

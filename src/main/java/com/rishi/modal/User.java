@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rishi.domain.USER_ROLE;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -31,16 +30,13 @@ public class User {
 
     private String mobile;
 
+
     private USER_ROLE role = USER_ROLE.ROLE_CUSTOMER;
 
     @OneToMany
-    private Set<Address> addressSet = new HashSet<>();
+    private Set<Address> addresses = new HashSet<>();
 
     @ManyToMany
     @JsonIgnore
     private Set<Coupon> usedCoupons = new HashSet<>();
-
-
-
-
 }

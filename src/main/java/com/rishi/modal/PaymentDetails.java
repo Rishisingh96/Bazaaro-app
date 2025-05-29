@@ -1,6 +1,7 @@
 package com.rishi.modal;
 
 import com.rishi.domain.PaymentStatus;
+import jakarta.persistence.Embeddable;
 import lombok.Data;
 
 @Data

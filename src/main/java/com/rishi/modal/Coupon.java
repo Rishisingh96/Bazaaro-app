@@ -33,4 +33,5 @@ public class Coupon {
 
     @ManyToMany(mappedBy = "usedCoupons")
     private Set<User> usersByUsers = new HashSet<>();
+
 }

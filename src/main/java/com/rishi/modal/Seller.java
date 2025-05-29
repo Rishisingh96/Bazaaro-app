@@ -34,6 +34,7 @@ public class Seller {
     @Embedded
     private BankDetails bankDetails = new BankDetails();
 
+    @OneToOne(cascade = CascadeType.ALL)
     private Address pickupAddress = new Address();
 
     private String GSTIN;

@@ -6,14 +6,16 @@ import com.rishi.domain.USER_ROLE;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+
 
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 public class User {
 
@@ -35,8 +37,13 @@ public class User {
 
     @OneToMany
     private Set<Address> addresses = new HashSet<>();
+// One user can have many addresses
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Address> addresses = new ArrayList<>();
+
 
     @ManyToMany
     @JsonIgnore
     private Set<Coupon> usedCoupons = new HashSet<>();
+
 }

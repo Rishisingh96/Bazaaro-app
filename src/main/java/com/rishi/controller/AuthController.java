@@ -1,0 +1,55 @@
+package com.rishi.controller;
+
+import com.rishi.domain.USER_ROLE;
+import com.rishi.modal.User;
+
+
+import com.rishi.repository.UserRepository;
+import com.rishi.response.AuthResponse;
+import com.rishi.response.SignupRequest;
+import com.rishi.service.AuthService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/auth")
+public class AuthController {
+
+    private final UserRepository userRepository;
+    private final AuthService authService;
+
+    public AuthController(UserRepository userRepository, AuthService authService) {
+        this.userRepository = userRepository;
+        this.authService = authService;
+    }
+
+
+    @PostMapping("/signup")
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody SignupRequest req) {
+
+        String jwt  =  authService.createUser(req);
+
+        AuthResponse response = new AuthResponse();
+        response.setJwt(jwt);
+        response.setMessage("Register successfully");
+        response.setRole(USER_ROLE.ROLE_CUSTOMER);
+        return ResponseEntity.ok(response);
+    }
+}
+
+
+//Create first Time User
+/* @PostMapping("/signup")
+    public ResponseEntity<User> createUserHandler(@RequestBody SignupRequest req) {
+        User user = new User();
+        user.setEmail(req.getEmail());
+        user.setFullName(req.getFullName());
+
+        // You can generate password/OTP logic here
+
+        User savedUser = userRepository.save(user);
+        return ResponseEntity.ok(savedUser);
+    }*/

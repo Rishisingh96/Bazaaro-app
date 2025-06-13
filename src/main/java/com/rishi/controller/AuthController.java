@@ -1,13 +1,13 @@
 package com.rishi.controller;
 
-import com.rishi.domain.USER_ROLE;
-import com.rishi.modal.User;
 
-
+import com.rishi.modal.VerificationCode;
 import com.rishi.repository.UserRepository;
 import com.rishi.response.AuthResponse;
 import com.rishi.response.SignupRequest;
 import com.rishi.service.AuthService;
+
+import com.rishi.domain.USER_ROLE;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserRepository userRepository;
+    private final UserRepository  userRepository;
     private final AuthService authService;
 
     public AuthController(UserRepository userRepository, AuthService authService) {
@@ -28,7 +28,7 @@ public class AuthController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody SignupRequest req) {
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody SignupRequest req) throws Exception {
 
         String jwt  =  authService.createUser(req);
 
@@ -36,6 +36,16 @@ public class AuthController {
         response.setJwt(jwt);
         response.setMessage("Register successfully");
         response.setRole(USER_ROLE.ROLE_CUSTOMER);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/sent/login-signup-otp")
+    public ResponseEntity<AuthResponse> setOtpHandler(@RequestBody VerificationCode req) throws Exception {
+
+        authService.setLoginOtp(req.getEmail());
+
+        AuthResponse response = new AuthResponse();
+        response.setMessage("OTP sent successfully to your email");
         return ResponseEntity.ok(response);
     }
 }

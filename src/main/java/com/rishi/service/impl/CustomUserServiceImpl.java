@@ -1,11 +1,8 @@
 package com.rishi.service.impl;
 
-import com.rishi.domain.USER_ROLE;
-import com.rishi.modal.Seller;
-import com.rishi.modal.User;
-import com.rishi.repository.UserRepository;
-import com.rishi.response.SellerRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,15 +10,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.rishi.domain.USER_ROLE;
+import com.rishi.modal.Seller;
+import com.rishi.modal.User;
+import com.rishi.repository.SellerRepository;
+import com.rishi.repository.UserRepository;
 
-@RequiredArgsConstructor
 @Service
 public class CustomUserServiceImpl implements UserDetailsService {
 
-    private  UserRepository userRepository;
-    private  SellerRepository sellerRepository;
+    private final UserRepository userRepository;
+    private final SellerRepository sellerRepository;
 
     public CustomUserServiceImpl(UserRepository userRepository, SellerRepository sellerRepository) {
         this.userRepository = userRepository;
@@ -51,7 +50,7 @@ public class CustomUserServiceImpl implements UserDetailsService {
         if(role == null) role = USER_ROLE.ROLE_CUSTOMER;
 
         List<GrantedAuthority> authorityList = new ArrayList<>();
-        authorityList.add(new SimpleGrantedAuthority("ROLE_" + role));
+        authorityList.add(new SimpleGrantedAuthority(role.toString()));
         return new org.springframework.security.core.userdetails.User(
                 email,
                 password,

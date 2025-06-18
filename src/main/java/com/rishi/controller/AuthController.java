@@ -3,6 +3,7 @@ package com.rishi.controller;
 
 import com.rishi.modal.VerificationCode;
 import com.rishi.repository.UserRepository;
+import com.rishi.request.LoginRequest;
 import com.rishi.response.AuthResponse;
 import com.rishi.response.SignupRequest;
 import com.rishi.service.AuthService;
@@ -19,13 +20,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final UserRepository  userRepository;
+
     private final AuthService authService;
 
     public AuthController(UserRepository userRepository, AuthService authService) {
         this.userRepository = userRepository;
         this.authService = authService;
     }
-
 
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> createUserHandler(@RequestBody SignupRequest req) throws Exception {
@@ -48,7 +49,25 @@ public class AuthController {
         response.setMessage("OTP sent successfully to your email");
         return ResponseEntity.ok(response);
     }
+
+
+    @PostMapping("/signing")
+    public ResponseEntity<AuthResponse> loginHandler(@RequestBody LoginRequest request) throws Exception {
+
+        AuthResponse response = authService.signing(request);
+
+        return ResponseEntity.ok(response);
+    }
 }
+
+
+
+
+
+
+
+
+
 
 
 //Create first Time User
@@ -63,3 +82,6 @@ public class AuthController {
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
     }*/
+
+
+

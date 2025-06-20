@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.rishi.modal.Seller;
+import com.rishi.repository.SellerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,6 +33,7 @@ import com.rishi.service.EmailService;
 import com.rishi.utils.OtpUtil;
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -38,30 +42,37 @@ public class AuthServiceImpl implements AuthService {
     private final VerificationCodeRepository verificationCodeRepository;
     private final EmailService emailService;
     private final CustomUserServiceImpl customUserService;
+    private final SellerRepository sellerRepository;
 
-    public AuthServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, CartRepository cartRepository, JwtProvider jwtProvider, VerificationCodeRepository verificationCodeRepository, EmailService emailService, CustomUserServiceImpl customUserService) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.cartRepository = cartRepository;
-        this.jwtProvider = jwtProvider;
-        this.verificationCodeRepository = verificationCodeRepository;
-        this.emailService = emailService;
-        this.customUserService = customUserService;
-    }
 
     @Override
-    public void setLoginOtp(String email) throws Exception {
+    public void setLoginOtp(String email, USER_ROLE role) throws Exception {
         String SIGNING_PREFIX = "signing_";
+//        String SELLER_PREFIX = "seller_";
         // Here you would typically generate an OTP and send it to the user's email.
 
+        // Check if the email starts with the signing prefix
        if(email.startsWith(SIGNING_PREFIX)){
            email = email.substring(SIGNING_PREFIX.length());
-           User user = userRepository.findByEmail(email);
-           if(user == null){
-               throw new Exception("User does not exist with provided email....");
+
+           // Check if the user exists based on the role
+           if(role.equals(USER_ROLE.ROLE_SELLER)){
+               Seller seller = sellerRepository.findByEmail(email);
+               if(seller == null){
+                   throw new Exception("Seller does not exist with provided email....");
+               }
+           }
+           else{
+               User user = userRepository.findByEmail(email);
+               if(user == null){
+                   throw new Exception("User does not exist with provided email....");
+               }
            }
        }
+
+       // Check if a verification code already exists for the email
        VerificationCode isExist = verificationCodeRepository.findByEmail(email);
+
        if(isExist != null){
            verificationCodeRepository.delete(isExist);
        }
@@ -78,8 +89,6 @@ public class AuthServiceImpl implements AuthService {
 
             emailService.sendVerificationOtpEmail(email,otp, subject, body);
     }
-
-
 
     @Override
     public String createUser(SignupRequest req) throws Exception {

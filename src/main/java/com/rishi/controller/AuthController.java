@@ -3,7 +3,9 @@ package com.rishi.controller;
 
 import com.rishi.modal.VerificationCode;
 import com.rishi.repository.UserRepository;
+import com.rishi.request.LoginOtpRequest;
 import com.rishi.request.LoginRequest;
+import com.rishi.response.ApiResponse;
 import com.rishi.response.AuthResponse;
 import com.rishi.response.SignupRequest;
 import com.rishi.service.AuthService;
@@ -41,11 +43,12 @@ public class AuthController {
     }
 
     @PostMapping("/sent/login-signup-otp")
-    public ResponseEntity<AuthResponse> setOtpHandler(@RequestBody VerificationCode req) throws Exception {
+    public ResponseEntity<ApiResponse> setOtpHandler(
+            @RequestBody LoginOtpRequest req) throws Exception {
 
-        authService.setLoginOtp(req.getEmail());
+        authService.setLoginOtp(req.getEmail(), req.getRole());
 
-        AuthResponse response = new AuthResponse();
+        ApiResponse response = new ApiResponse();
         response.setMessage("OTP sent successfully to your email");
         return ResponseEntity.ok(response);
     }
@@ -61,13 +64,18 @@ public class AuthController {
 }
 
 
+/*
+// Veryfication Code Request Handler
+@PostMapping("/sent/login-signup-otp")
+    public ResponseEntity<AuthResponse> setOtpHandler(
+            @RequestBody VerificationCode req) throws Exception {
 
+        authService.setLoginOtp(req.getEmail(), req.getRole());
 
-
-
-
-
-
+        AuthResponse response = new AuthResponse();
+        response.setMessage("OTP sent successfully to your email");
+        return ResponseEntity.ok(response);
+    }*/
 
 
 //Create first Time User

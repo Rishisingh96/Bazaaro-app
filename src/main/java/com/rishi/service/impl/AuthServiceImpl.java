@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.rishi.modal.Seller;
-import com.rishi.repository.SellerRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,15 +11,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.rishi.config.JwtProvider;
 import com.rishi.domain.USER_ROLE;
 import com.rishi.modal.Cart;
+import com.rishi.modal.Seller;
 import com.rishi.modal.User;
 import com.rishi.modal.VerificationCode;
 import com.rishi.repository.CartRepository;
+import com.rishi.repository.SellerRepository;
 import com.rishi.repository.UserRepository;
 import com.rishi.repository.VerificationCodeRepository;
 import com.rishi.request.LoginRequest;
@@ -32,11 +30,12 @@ import com.rishi.service.AuthService;
 import com.rishi.service.EmailService;
 import com.rishi.utils.OtpUtil;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final CartRepository cartRepository;
     private final JwtProvider jwtProvider;
     private final VerificationCodeRepository verificationCodeRepository;
@@ -110,7 +109,7 @@ public class AuthServiceImpl implements AuthService {
             createUser.setFullName(req.getFullName());
             createUser.setRole(USER_ROLE.ROLE_CUSTOMER);
             createUser.setMobile("7800017055");
-            createUser.setPassword(passwordEncoder.encode(req.getOtp())); // You should hash the password in a real application
+            createUser.setPassword(req.getOtp()); // You should hash the password in a real application
             // You can generate password/OTP logic here
 
             user = userRepository.save(createUser);
@@ -150,17 +149,25 @@ public class AuthServiceImpl implements AuthService {
         return authResponse;
     }
 
-    private Authentication authenticate(String username, String otp) {
+
+    private Authentication authenticate(String username, String otp) throws Exception {
         UserDetails userDetails = customUserService.loadUserByUsername(username);
 
+
+        String SELLER_PREFIX = "seller_";
+        if(username.startsWith(SELLER_PREFIX)){
+            username = username.substring(SELLER_PREFIX.length());
+        }
+
+
         if(userDetails == null){
-            throw new BadCredentialsException("Invalid username ");
+            throw new Exception("Invalid username ");
         }
 
         VerificationCode verificationCode = verificationCodeRepository.findByEmail(username);
 
         if(verificationCode == null || !verificationCode.getOtp().equals(otp)){
-            throw new BadCredentialsException("User does not exist with provided email || Invalid username or password");
+            throw new BadCredentialsException("Wrong otp...");
         }
         return  new UsernamePasswordAuthenticationToken(
                userDetails, 

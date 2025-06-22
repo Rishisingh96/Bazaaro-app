@@ -1,0 +1,274 @@
+{
+  "seller_test_data": {
+    "create_seller_request": {
+      "sellerName": "John Doe Electronics",
+      "mobile": "+91-9876543210",
+      "email": "john.doe@electronics.com",
+      "password": "SecurePassword123!",
+      "businessDetails": {
+        "businessName": "Doe Electronics Store",
+        "businessEmail": "business@doeelectronics.com",
+        "businessMobile": "+91-9876543211",
+        "logo": "https://example.com/logo.png",
+        "banner": "https://example.com/banner.jpg"
+      },
+      "bankDetails": {
+        "accountNumber": "1234567890123456",
+        "accountHolderName": "John Doe Electronics",
+        "ifscCode": "SBIN0001234"
+      },
+      "pickupAddress": {
+        "name": "John Doe",
+        "locality": "Tech Park",
+        "address": "123 Electronics Street, Tech Park",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pinCode": "400001",
+        "mobile": "+91-9876543210"
+      },
+      "GSTIN": "27ABCDE1234F1Z5",
+      "role": "ROLE_SELLER",
+      "isEmailVerified": false,
+      "accountStatus": "PENDING_VERIFICATION"
+    },
+    
+    "update_seller_request": {
+      "sellerName": "John Doe Electronics Updated",
+      "mobile": "+91-9876543212",
+      "email": "john.doe.updated@electronics.com",
+      "businessDetails": {
+        "businessName": "Doe Electronics Store - Premium",
+        "businessEmail": "premium@doeelectronics.com",
+        "businessMobile": "+91-9876543213",
+        "logo": "https://example.com/updated-logo.png",
+        "banner": "https://example.com/updated-banner.jpg"
+      },
+      "bankDetails": {
+        "accountNumber": "9876543210987654",
+        "accountHolderName": "John Doe Electronics Premium",
+        "ifscCode": "HDFC0009876"
+      },
+      "pickupAddress": {
+        "name": "John Doe Updated",
+        "locality": "Premium Tech Park",
+        "address": "456 Premium Electronics Street, Premium Tech Park",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pinCode": "400002",
+        "mobile": "+91-9876543212"
+      },
+      "GSTIN": "27ABCDE1234F1Z6"
+    },
+    
+    "minimal_seller_request": {
+      "sellerName": "Minimal Seller",
+      "mobile": "+91-9876543200",
+      "email": "minimal@seller.com",
+      "password": "Password123!",
+      "businessDetails": {
+        "businessName": "Minimal Business",
+        "businessEmail": "business@minimal.com",
+        "businessMobile": "+91-9876543201"
+      },
+      "bankDetails": {
+        "accountNumber": "1111111111111111",
+        "accountHolderName": "Minimal Seller",
+        "ifscCode": "SBIN0001111"
+      },
+      "pickupAddress": {
+        "name": "Minimal Seller",
+        "locality": "Basic Area",
+        "address": "Simple Address",
+        "city": "Delhi",
+        "state": "Delhi",
+        "pinCode": "110001",
+        "mobile": "+91-9876543200"
+      },
+      "GSTIN": "07MINIMAL1234F1Z5"
+    },
+    
+    "seller_without_address": {
+      "sellerName": "No Address Seller",
+      "mobile": "+91-9876543202",
+      "email": "noaddress@seller.com",
+      "password": "Password123!",
+      "businessDetails": {
+        "businessName": "No Address Business",
+        "businessEmail": "business@noaddress.com",
+        "businessMobile": "+91-9876543203"
+      },
+      "bankDetails": {
+        "accountNumber": "2222222222222222",
+        "accountHolderName": "No Address Seller",
+        "ifscCode": "SBIN0002222"
+      },
+      "GSTIN": "07NOADDR1234F1Z5"
+    },
+    
+    "seller_response_example": {
+      "id": 1,
+      "sellerName": "John Doe Electronics",
+      "mobile": "+91-9876543210",
+      "email": "john.doe@electronics.com",
+      "businessDetails": {
+        "businessName": "Doe Electronics Store",
+        "businessEmail": "business@doeelectronics.com",
+        "businessMobile": "+91-9876543211",
+        "logo": "https://example.com/logo.png",
+        "banner": "https://example.com/banner.jpg"
+      },
+      "bankDetails": {
+        "accountNumber": "1234567890123456",
+        "accountHolderName": "John Doe Electronics",
+        "ifscCode": "SBIN0001234"
+      },
+      "pickupAddress": {
+        "id": 1,
+        "name": "John Doe",
+        "locality": "Tech Park",
+        "address": "123 Electronics Street, Tech Park",
+        "city": "Mumbai",
+        "state": "Maharashtra",
+        "pinCode": "400001",
+        "mobile": "+91-9876543210"
+      },
+      "GSTIN": "27ABCDE1234F1Z5",
+      "role": "ROLE_SELLER",
+      "isEmailVerified": false,
+      "accountStatus": "PENDING_VERIFICATION"
+    }
+  },
+  
+  "postman_collection_examples": {
+    "create_seller": {
+      "method": "POST",
+      "url": "http://localhost:8080/sellers",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "sellerName": "John Doe Electronics",
+        "mobile": "+91-9876543210",
+        "email": "john.doe@electronics.com",
+        "password": "SecurePassword123!",
+        "businessDetails": {
+          "businessName": "Doe Electronics Store",
+          "businessEmail": "business@doeelectronics.com",
+          "businessMobile": "+91-9876543211",
+          "logo": "https://example.com/logo.png",
+          "banner": "https://example.com/banner.jpg"
+        },
+        "bankDetails": {
+          "accountNumber": "1234567890123456",
+          "accountHolderName": "John Doe Electronics",
+          "ifscCode": "SBIN0001234"
+        },
+        "pickupAddress": {
+          "name": "John Doe",
+          "locality": "Tech Park",
+          "address": "123 Electronics Street, Tech Park",
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "pinCode": "400001",
+          "mobile": "+91-9876543210"
+        },
+        "GSTIN": "27ABCDE1234F1Z5"
+      }
+    },
+    
+    "get_seller_by_id": {
+      "method": "GET",
+      "url": "http://localhost:8080/sellers/1",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN_HERE"
+      }
+    },
+    
+    "update_seller": {
+      "method": "PATCH",
+      "url": "http://localhost:8080/sellers",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer YOUR_JWT_TOKEN_HERE"
+      },
+      "body": {
+        "sellerName": "John Doe Electronics Updated",
+        "mobile": "+91-9876543212",
+        "businessDetails": {
+          "businessName": "Doe Electronics Store - Premium",
+          "businessEmail": "premium@doeelectronics.com",
+          "businessMobile": "+91-9876543213",
+          "logo": "https://example.com/updated-logo.png",
+          "banner": "https://example.com/updated-banner.jpg"
+        },
+        "bankDetails": {
+          "accountNumber": "9876543210987654",
+          "accountHolderName": "John Doe Electronics Premium",
+          "ifscCode": "HDFC0009876"
+        },
+        "pickupAddress": {
+          "name": "John Doe Updated",
+          "locality": "Premium Tech Park",
+          "address": "456 Premium Electronics Street, Premium Tech Park",
+          "city": "Mumbai",
+          "state": "Maharashtra",
+          "pinCode": "400002",
+          "mobile": "+91-9876543212"
+        },
+        "GSTIN": "27ABCDE1234F1Z6"
+      }
+    },
+    
+    "delete_seller": {
+      "method": "DELETE",
+      "url": "http://localhost:8080/sellers/1",
+      "headers": {
+        "Authorization": "Bearer YOUR_JWT_TOKEN_HERE"
+      }
+    },
+    
+    "verify_seller_email": {
+      "method": "PATCH",
+      "url": "http://localhost:8080/sellers/verify/123456",
+      "headers": {
+        "Content-Type": "application/json"
+      }
+    }
+  },
+  
+  "field_descriptions": {
+    "seller_fields": {
+      "id": "Auto-generated unique identifier",
+      "sellerName": "Name of the seller",
+      "mobile": "Contact mobile number",
+      "email": "Unique email address (required)",
+      "password": "Login password",
+      "GSTIN": "GST Identification Number",
+      "role": "User role (ROLE_SELLER by default)",
+      "isEmailVerified": "Email verification status",
+      "accountStatus": "Account status (PENDING_VERIFICATION, ACTIVE, SUSPENDED, etc.)"
+    },
+    "business_details_fields": {
+      "businessName": "Name of the business",
+      "businessEmail": "Business email address",
+      "businessMobile": "Business contact number",
+      "logo": "URL to business logo image",
+      "banner": "URL to business banner image"
+    },
+    "bank_details_fields": {
+      "accountNumber": "Bank account number",
+      "accountHolderName": "Name of account holder",
+      "ifscCode": "IFSC code of the bank branch"
+    },
+    "address_fields": {
+      "id": "Auto-generated unique identifier",
+      "name": "Contact person name",
+      "locality": "Area/locality",
+      "address": "Complete address",
+      "city": "City name",
+      "state": "State name",
+      "pinCode": "PIN code",
+      "mobile": "Contact mobile number"
+    }
+  }
+} 

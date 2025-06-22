@@ -1,18 +1,19 @@
 package com.rishi.service.impl;
 
+import java.util.List;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.rishi.config.JwtProvider;
 import com.rishi.domain.AccountStatus;
 import com.rishi.domain.USER_ROLE;
-import com.rishi.modal.Address;
 import com.rishi.modal.Seller;
 import com.rishi.repository.AddressRepository;
 import com.rishi.repository.SellerRepository;
 import com.rishi.service.SellerService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -35,20 +36,11 @@ public class SellerServiceImpl implements SellerService {
             throw new RuntimeException("Seller already exists with email: " + seller.getEmail());
         }
 
-        Address savedAddress = addressRepository.save(seller.getPickupAddress());
+        seller.setPassword(passwordEncoder.encode(seller.getPassword()));
+        seller.setRole(USER_ROLE.ROLE_SELLER);
+        seller.setAccountStatus(AccountStatus.PENDING_VERIFICATION);
 
-        Seller newSeller = new Seller();
-        newSeller.setEmail(seller.getEmail());
-        newSeller.setPassword(passwordEncoder.encode(seller.getPassword()));
-        newSeller.setSellerName(seller.getSellerName());
-        newSeller.setPickupAddress(savedAddress);
-        newSeller.setGSTIN(seller.getGSTIN());
-        newSeller.setRole(USER_ROLE.ROLE_SELLER);
-        newSeller.setMobile(seller.getMobile());
-        newSeller.setBankDetails(seller.getBankDetails());
-        newSeller.setBusinessDetails(seller.getBusinessDetails());
-
-        return sellerRepository.save(newSeller);
+        return sellerRepository.save(seller);
     }
 
     @Override
@@ -67,7 +59,7 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public List<Seller> getAllSellers(AccountStatus status) {
+    public abstract List<Seller> getAllSellers() {
         return sellerRepository.findByAccountStatus(status);
     }
 

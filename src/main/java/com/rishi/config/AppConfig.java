@@ -30,9 +30,10 @@ public class AppConfig {
        http.sessionManagement(management->management.sessionCreationPolicy(
                SessionCreationPolicy.STATELESS
                )).authorizeHttpRequests(authorize -> authorize
-               .requestMatchers("/api/**").authenticated()
-               .requestMatchers("/api/products/*/reviews").permitAll()
-               .anyRequest().permitAll()
+                       .requestMatchers("/api/**").authenticated()
+                       .requestMatchers("/auth/**","/sellers/**").permitAll()
+                       .requestMatchers("/api/products/*/reviews").permitAll()
+                       .anyRequest().permitAll()
        ).addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
 //               .csrf(csrc ->csrc.disable())  //or we can use lambda expression
                .csrf(AbstractHttpConfigurer::disable)

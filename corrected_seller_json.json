@@ -1,0 +1,95 @@
+{
+  "corrected_seller_json": {
+    "description": "This JSON fixes the field name issues in your original JSON",
+    "original_issue": "You used 'street' instead of 'address' and 'country' which doesn't exist in Address entity",
+    "corrected_json": {
+      "sellerName": "Rishi Singh",
+      "mobile": "7800017055",
+      "email": "rishijob9838@gmail.com",
+      "password": "strongPassword123",
+      "businessDetails": {
+        "businessName": "RishiTech Pvt Ltd",
+        "businessEmail": "contact@rishitech.com",
+        "businessMobile": "9876543210",
+        "logo": "logo_url_or_base64",
+        "banner": "banner_url_or_base64"
+      },
+      "bankDetails": {
+        "accountNumber": "123456789012",
+        "accountHolderName": "Rishi Singh",
+        "ifscCode": "SBIN0001234"
+      },
+      "pickupAddress": {
+        "name": "Saloni Suryavanshi",
+        "locality": "MG Road Area",
+        "address": "101 MG Road",
+        "city": "Indore",
+        "state": "Madhya Pradesh",
+        "pinCode": "452001",
+        "mobile": "7800017055"
+      },
+      "GSTIN": "22AAAAA0000A1Z5"
+    },
+    
+    "postman_request": {
+      "method": "POST",
+      "url": "http://localhost:8080/sellers",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "sellerName": "Rishi Singh",
+        "mobile": "7800017055",
+        "email": "rishijob9838@gmail.com",
+        "password": "strongPassword123",
+        "businessDetails": {
+          "businessName": "RishiTech Pvt Ltd",
+          "businessEmail": "contact@rishitech.com",
+          "businessMobile": "9876543210",
+          "logo": "logo_url_or_base64",
+          "banner": "banner_url_or_base64"
+        },
+        "bankDetails": {
+          "accountNumber": "123456789012",
+          "accountHolderName": "Rishi Singh",
+          "ifscCode": "SBIN0001234"
+        },
+        "pickupAddress": {
+          "name": "Saloni Suryavanshi",
+          "locality": "MG Road Area",
+          "address": "101 MG Road",
+          "city": "Indore",
+          "state": "Madhya Pradesh",
+          "pinCode": "452001",
+          "mobile": "7800017055"
+        },
+        "GSTIN": "22AAAAA0000A1Z5"
+      }
+    },
+    
+    "field_corrections": {
+      "pickupAddress": {
+        "original": {
+          "street": "101 MG Road",
+          "country": "India"
+        },
+        "corrected": {
+          "locality": "MG Road Area",
+          "address": "101 MG Road",
+          "mobile": "7800017055"
+        },
+        "explanation": "Address entity has 'address' field, not 'street'. Also added 'locality' and 'mobile' fields which are part of Address entity. Removed 'country' as it's not in the entity."
+      }
+    },
+    
+    "address_entity_fields": {
+      "name": "Contact person name",
+      "locality": "Area/locality (optional)",
+      "address": "Complete address",
+      "city": "City name",
+      "state": "State name", 
+      "pinCode": "PIN code",
+      "mobile": "Contact mobile number"
+    }
+  }
+} 

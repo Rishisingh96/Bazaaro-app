@@ -88,11 +88,6 @@ public class SellerController {
          return new ResponseEntity<>(seller, HttpStatus.OK);
      }
 
-     @GetMapping
-     public ResponseEntity<List<Seller>> getAllSellers(@RequestParam(required = false) AccountStatus status) {
-        List<Seller> sellers = sellerService.getAllSellers(status);
-        return new ResponseEntity.ok(sellers);
-     }
 
      @GetMapping("/profile")
      public ResponseEntity<Seller> getSellerByJwt(
@@ -110,6 +105,12 @@ public class SellerController {
          return new ResponseEntity<>(report, HttpStatus.OK);
      }*/
 
+    @GetMapping
+     public ResponseEntity<List<Seller>> getAllSellers(
+             @RequestParam(required = false) AccountStatus status) {
+        List<Seller> sellers = sellerService.getAllSellers(status);
+        return ResponseEntity.ok(sellers);
+     }
 
     @PatchMapping()
     public ResponseEntity<Seller> updateSeller(
@@ -122,9 +123,9 @@ public class SellerController {
     }
 
 
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSeller(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Void> deleteSeller(
+            @PathVariable Long id) throws Exception {
         sellerService.deleteSeller(id);
         return ResponseEntity.noContent().build();
     }

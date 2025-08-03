@@ -2,6 +2,7 @@ package com.rishi.service.impl;
 
 import java.util.List;
 
+import com.rishi.modal.Address;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,11 +37,25 @@ public class SellerServiceImpl implements SellerService {
             throw new RuntimeException("Seller already exists with email: " + seller.getEmail());
         }
 
-        seller.setPassword(passwordEncoder.encode(seller.getPassword()));
-        seller.setRole(USER_ROLE.ROLE_SELLER);
-        seller.setAccountStatus(AccountStatus.PENDING_VERIFICATION);
+        Address saveAddress = addressRepository.save(seller.getPickupAddress());
 
-        return sellerRepository.save(seller);
+        Seller newSeller = new Seller();
+
+        newSeller.setSellerName(seller.getSellerName());
+        newSeller.setMobile(seller.getMobile());
+        newSeller.setEmail(seller.getEmail());
+        newSeller.setPassword(passwordEncoder.encode(seller.getPassword()));
+
+        newSeller.setBusinessDetails(seller.getBusinessDetails());
+        newSeller.setBankDetails(seller.getBankDetails());
+        newSeller.setPickupAddress(seller.getPickupAddress());
+        newSeller.setGSTIN(seller.getGSTIN());
+        newSeller.setRole(USER_ROLE.ROLE_SELLER);
+//        newSeller.setEmailVerified(seller.isEmailVerified());
+//        newSeller.setAccountStatus(seller.getAccountStatus());
+
+
+        return sellerRepository.save(newSeller);
     }
 
     @Override
@@ -59,7 +74,7 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public abstract List<Seller> getAllSellers() {
+    public List<Seller> getAllSellers(AccountStatus status) {
         return sellerRepository.findByAccountStatus(status);
     }
 
@@ -131,7 +146,6 @@ public class SellerServiceImpl implements SellerService {
         Seller seller = getSellerByEmail(email);
         seller.setEmailVerified(true);
         return sellerRepository.save(seller);
-
     }
 
     @Override

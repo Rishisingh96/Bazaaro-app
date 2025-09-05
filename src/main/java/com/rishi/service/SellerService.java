@@ -1,6 +1,7 @@
 package com.rishi.service;
 
 import com.rishi.domain.AccountStatus;
+import com.rishi.exceptions.SellerException;
 import com.rishi.modal.Seller;
 
 import java.util.List;
@@ -8,8 +9,8 @@ import java.util.List;
 public interface SellerService {
     Seller getSellerProfile(String jwt) throws Exception;
     Seller createSeller(Seller seller);
-    Seller getSellerById(Long id) throws Exception;
-    Seller getSellerByEmail(String email) throws Exception;
+    Seller getSellerById(Long id) throws SellerException;
+    Seller getSellerByEmail(String email) throws SellerException;
     List<Seller> getAllSellers(AccountStatus status);
     Seller updateSeller(Long id, Seller seller) throws Exception;
     void deleteSeller(Long id) throws Exception;

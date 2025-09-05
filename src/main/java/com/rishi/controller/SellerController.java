@@ -3,6 +3,7 @@ package com.rishi.controller;
 import java.util.List;
 
 import com.rishi.config.JwtProvider;
+import com.rishi.exceptions.SellerException;
 import com.rishi.modal.Seller;
 import com.rishi.modal.VerificationCode;
 import com.rishi.service.EmailService;
@@ -83,7 +84,7 @@ public class SellerController {
 
 
      @GetMapping("/{id}")
-     public ResponseEntity<Seller> getSellerById(@PathVariable Long id) throws Exception {
+     public ResponseEntity<Seller> getSellerById(@PathVariable Long id) throws SellerException {
          Seller seller = sellerService.getSellerById(id);
          return new ResponseEntity<>(seller, HttpStatus.OK);
      }
@@ -91,7 +92,7 @@ public class SellerController {
 
      @GetMapping("/profile")
      public ResponseEntity<Seller> getSellerByJwt(
-             @RequestHeader("Authorization") String jwt) throws Exception {
+             @RequestHeader("Authorization") String jwt) throws SellerException {
          String email = jwtProvider.getEmailFromJwtToken(jwt);
          Seller seller = sellerService.getSellerByEmail(email);
          return new ResponseEntity<>(seller, HttpStatus.OK);

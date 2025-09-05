@@ -2,6 +2,7 @@ package com.rishi.service.impl;
 
 import java.util.List;
 
+import com.rishi.exceptions.SellerException;
 import com.rishi.modal.Address;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -59,16 +60,16 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public Seller getSellerById(Long id) throws Exception {
+    public Seller getSellerById(Long id) throws SellerException {
         return sellerRepository.findById(id)
-                .orElseThrow(()->new Exception("Seller not found with id: " + id));
+                .orElseThrow(()->new SellerException("Seller not found with id: " + id));
     }
 
     @Override
-    public Seller getSellerByEmail(String email) throws Exception {
+    public Seller getSellerByEmail(String email) throws SellerException {
         Seller seller = sellerRepository.findByEmail(email);
         if (seller == null) {
-            throw new Exception("Seller not found with email: " + email);
+            throw new SellerException("Seller not found with email: " + email);
         }
         return seller;
     }

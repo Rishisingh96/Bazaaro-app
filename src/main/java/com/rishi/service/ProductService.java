@@ -1,0 +1,29 @@
+package com.rishi.service;
+
+import com.rishi.modal.Product;
+import com.rishi.modal.Seller;
+import com.rishi.request.CreateProductRequest;
+import org.springframework.data.domain.Page;
+
+
+import java.util.List;
+
+public interface ProductService {
+    public Product createProduct(CreateProductRequest req, Seller seller);
+    public void deleteProduct(Long productId);
+    public Product updateProduct(Long productId, Product updatedProduct);
+    Product findProductById(Long productId);
+    List<Product> searchProducts();
+    public Page<Product> getAllProducts(
+            String category,
+            String brand,
+            String colors,
+            String sizes,
+            Integer minPrice,
+            Integer maxPrice,
+            String sort,
+            String stock,
+            Integer pageNumber
+            );
+    List<Product> getProductBySellerId(Long sellerId);
+}

@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-
+import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 
 import java.util.Collections;
 
@@ -35,6 +35,7 @@ public class AppConfig {
                        .requestMatchers("/api/products/*/reviews").permitAll()
                        .anyRequest().permitAll()
        ).addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
+               .addFilterBefore(openEntityManagerInViewFilter(), JwtTokenValidator.class)
 //               .csrf(csrc ->csrc.disable())  //or we can use lambda expression
                .csrf(AbstractHttpConfigurer::disable)
                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
@@ -70,5 +71,10 @@ public class AppConfig {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    public OpenEntityManagerInViewFilter openEntityManagerInViewFilter() {
+        return new OpenEntityManagerInViewFilter();
     }
 }

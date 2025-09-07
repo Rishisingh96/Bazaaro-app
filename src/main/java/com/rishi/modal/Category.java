@@ -23,7 +23,7 @@ public class Category {
     @Column(unique = true)
     private String categoryId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Category parentCategory;
 
     @NotNull

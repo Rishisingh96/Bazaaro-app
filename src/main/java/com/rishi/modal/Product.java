@@ -1,5 +1,6 @@
 package com.rishi.modal;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,22 +33,22 @@ public class Product {
 
     private String color;
 
-    @ElementCollection  // for separate table for product images
+    @ElementCollection(fetch = FetchType.EAGER)  // for separate table for product images
     private List<String> images = new ArrayList<>();
 
     private int numRatings;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Seller seller;
 
     private LocalDateTime createdAt;
 
     private String Sizes;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Review> reviews = new ArrayList<>();
 }
 

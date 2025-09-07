@@ -13,7 +13,7 @@ public interface ProductService {
     public void deleteProduct(Long productId);
     public Product updateProduct(Long productId, Product updatedProduct);
     Product findProductById(Long productId);
-    List<Product> searchProducts();
+    List<Product> searchProducts(String query);
     public Page<Product> getAllProducts(
             String category,
             String brand,
@@ -21,6 +21,7 @@ public interface ProductService {
             String sizes,
             Integer minPrice,
             Integer maxPrice,
+            Integer minDiscount,
             String sort,
             String stock,
             Integer pageNumber

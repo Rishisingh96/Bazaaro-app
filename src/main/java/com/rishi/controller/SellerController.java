@@ -17,12 +17,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.rishi.domain.AccountStatus;
+import com.rishi.domain.USER_ROLE;
 import com.rishi.repository.VerificationCodeRepository;
+import com.rishi.request.LoginOtpRequest;
 import com.rishi.request.LoginRequest;
+import com.rishi.response.ApiResponse;
 import com.rishi.response.AuthResponse;
 import com.rishi.service.AuthService;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -36,7 +38,17 @@ public class SellerController {
     private final JwtProvider jwtProvider;
 
 
-    // 
+    @PostMapping("/request-login-otp")
+    public ResponseEntity<ApiResponse> requestLoginOtp(@RequestBody LoginOtpRequest req) throws Exception {
+        // Set role to SELLER for seller login OTP request
+        req.setRole(USER_ROLE.ROLE_SELLER);
+        authService.setLoginOtp(req.getEmail(), req.getRole());
+        
+        ApiResponse response = new ApiResponse();
+        response.setMessage("OTP sent successfully to your email");
+        return ResponseEntity.ok(response);
+    }
+    
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> loginSeller(@RequestBody LoginRequest req) throws Exception{
 
@@ -53,13 +65,28 @@ public class SellerController {
     @PatchMapping("/verify/{otp}")
      public ResponseEntity<Seller> verifySellerEmail(@PathVariable String otp) throws Exception {
 
-         VerificationCode verificationCode = verificationCodeRepository.findByOtp(otp);
+         VerificationCode verificationCode = verificationCodeRepository.findFirstByOtp(otp).orElse(null);
 
-         if(verificationCode == null || !verificationCode.getOtp().equals(otp)) {
-             throw new Exception("Verification Failed: Invalid OTP provided.");
+         if(verificationCode == null) {
+             throw new Exception("Verification Failed: Invalid OTP provided. OTP " + otp + " not found in database.");
          }
-         Seller seller = sellerService.verifyEmail(verificationCode.getEmail(), otp);
-         return new ResponseEntity<>(seller, HttpStatus.OK);
+         
+         if(!verificationCode.getOtp().equals(otp)) {
+             throw new Exception("Verification Failed: OTP mismatch.");
+         }
+         
+         String emailFromVerificationCode = verificationCode.getEmail();
+         System.out.println("Verification OTP: " + otp + " | Email from VerificationCode table: " + emailFromVerificationCode);
+         
+         try {
+             Seller seller = sellerService.verifyEmail(emailFromVerificationCode, otp);
+             return new ResponseEntity<>(seller, HttpStatus.OK);
+         } catch (SellerException e) {
+             // If exact match fails, provide helpful error message
+             throw new Exception("Verification Failed: Email in VerificationCode (" + emailFromVerificationCode + 
+                 ") does not match any seller email in database. Please check for typos like .con vs .com. " +
+                 "Original error: " + e.getMessage());
+         }
      }
 
 

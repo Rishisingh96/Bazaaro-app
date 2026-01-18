@@ -33,7 +33,7 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public Seller createSeller(Seller seller) {
-        Seller sellerExist = sellerRepository.findByEmail(seller.getEmail());
+        Seller sellerExist = sellerRepository.findFirstByEmail(seller.getEmail()).orElse(null);
         if(sellerExist != null) {
             throw new RuntimeException("Seller already exists with email: " + seller.getEmail());
         }
@@ -67,15 +67,38 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public Seller getSellerByEmail(String email) throws SellerException {
-        Seller seller = sellerRepository.findByEmail(email);
+        System.out.println("Searching for seller with email: " + email);
+        // First try exact match
+        Seller seller = sellerRepository.findFirstByEmail(email).orElse(null);
+        
+        // If not found, try case-insensitive search
         if (seller == null) {
-            throw new SellerException("Seller not found with email: " + email);
+            System.out.println("Exact match not found, trying case-insensitive search for: " + email);
+            // Get all sellers and find case-insensitive match
+            java.util.List<Seller> allSellers = sellerRepository.findAll();
+            seller = allSellers.stream()
+                .filter(s -> s.getEmail() != null && s.getEmail().equalsIgnoreCase(email))
+                .findFirst()
+                .orElse(null);
         }
+        
+        if (seller == null) {
+            System.out.println("Seller not found with email: " + email);
+            throw new SellerException("Seller not found with email: " + email + ". Please check if the email in database matches. " +
+                "Note: Email matching is case-insensitive. Check for typos like .con vs .com");
+        }
+        
+        System.out.println("Seller found: ID=" + seller.getId() + ", Email in DB=" + seller.getEmail() + ", Searched for=" + email);
         return seller;
     }
 
     @Override
     public List<Seller> getAllSellers(AccountStatus status) {
+        if(status == null) {
+            // If no status filter provided, return all sellers
+            return sellerRepository.findAll();
+        }
+        // If status is provided, filter by that status
         return sellerRepository.findByAccountStatus(status);
     }
 
@@ -144,6 +167,7 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public Seller verifyEmail(String email, String otp) throws Exception {
+        System.out.println("Attempting to verify email: " + email);
         Seller seller = getSellerByEmail(email);
         seller.setEmailVerified(true);
         return sellerRepository.save(seller);

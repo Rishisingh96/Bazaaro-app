@@ -47,30 +47,29 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void setLoginOtp(String email, USER_ROLE role) throws Exception {
         String SIGNING_PREFIX = "signing_";
-//        String SELLER_PREFIX = "seller_";
         // Here you would typically generate an OTP and send it to the user's email.
 
-        // Check if the email starts with the signing prefix
-       if(email.startsWith(SIGNING_PREFIX)){
+        // Remove signing prefix if present
+        if(email.startsWith(SIGNING_PREFIX)){
            email = email.substring(SIGNING_PREFIX.length());
+        }
 
-           // Check if the user exists based on the role
-           if(role.equals(USER_ROLE.ROLE_SELLER)){
-               Seller seller = sellerRepository.findByEmail(email);
-               if(seller == null){
-                   throw new Exception("Seller does not exist with provided email....");
-               }
-           }
-           else{
-               User user = userRepository.findByEmail(email);
-               if(user == null){
-                   throw new Exception("User does not exist with provided email....");
-               }
-           }
-       }
+        // Check if the user exists based on the role (regardless of prefix)
+        if(role != null && role.equals(USER_ROLE.ROLE_SELLER)){
+            Seller seller = sellerRepository.findFirstByEmail(email).orElse(null);
+            if(seller == null){
+                throw new Exception("Seller does not exist with provided email: " + email);
+            }
+        }
+        else if(role != null){
+            User user = userRepository.findFirstByEmail(email).orElse(null);
+            if(user == null){
+                throw new Exception("User does not exist with provided email: " + email);
+            }
+        }
 
        // Check if a verification code already exists for the email
-       VerificationCode isExist = verificationCodeRepository.findByEmail(email);
+       VerificationCode isExist = verificationCodeRepository.findFirstByEmail(email).orElse(null);
 
        if(isExist != null){
            verificationCodeRepository.delete(isExist);
@@ -94,14 +93,14 @@ public class AuthServiceImpl implements AuthService {
     // Here you would typically save the user to a database and return a success message or user ID.
 
         // Validate the request
-        VerificationCode verificationCode = verificationCodeRepository.findByEmail(req.getEmail());
+        VerificationCode verificationCode = verificationCodeRepository.findFirstByEmail(req.getEmail()).orElse(null);
 
         if(verificationCode == null || !verificationCode.getOtp().equals(req.getOtp())) {
             throw new Exception("Invalid OTP or user does not exist");
         }
 
         // Check if the user already exists
-        User user = userRepository.findByEmail(req.getEmail());
+        User user = userRepository.findFirstByEmail(req.getEmail()).orElse(null);
 
         if(user == null){
             User createUser = new User();
@@ -164,11 +163,19 @@ public class AuthServiceImpl implements AuthService {
             throw new Exception("Invalid username ");
         }
 
-        VerificationCode verificationCode = verificationCodeRepository.findByEmail(username);
+        VerificationCode verificationCode = verificationCodeRepository.findFirstByEmail(username).orElse(null);
 
-        if(verificationCode == null || !verificationCode.getOtp().equals(otp)){
-            throw new BadCredentialsException("Wrong otp...");
+        if(verificationCode == null){
+            throw new BadCredentialsException("No OTP found for this email. Please request a new OTP.");
         }
+        
+        if(!verificationCode.getOtp().equals(otp)){
+            throw new BadCredentialsException("Wrong OTP. Please check and try again.");
+        }
+        
+        // Delete the OTP after successful verification (one-time use)
+        verificationCodeRepository.delete(verificationCode);
+        
         return  new UsernamePasswordAuthenticationToken(
                userDetails, 
                null, userDetails.getAuthorities()

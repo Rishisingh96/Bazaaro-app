@@ -1,0 +1,68 @@
+{
+  "product1_electronics": {
+    "title": "Samsung Galaxy S23 Ultra",
+    "description": "Latest flagship smartphone with 200MP camera, Snapdragon 8 Gen 2, 12GB RAM, 256GB storage. Features include 6.8 inch Dynamic AMOLED display, 5000mAh battery with fast charging.",
+    "mrpPrice": 124999,
+    "sellingPrice": 99999,
+    "color": "Phantom Black",
+    "images": [
+      "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s918bzbdinu/gallery/in-galaxy-s23-s918-456069-sm-s918bzbdinu-534892567",
+      "https://images.samsung.com/is/image/samsung/p6pim/in/sm-s918bzbdinu/gallery/in-galaxy-s23-s918-456069-sm-s918bzbdinu-534892568"
+    ],
+    "category": "ELECTRONICS",
+    "category2": "MOBILE_PHONES",
+    "category3": "SMARTPHONES",
+    "sizes": "256GB, 512GB, 1TB"
+  },
+
+  "product2_clothing": {
+    "title": "Men's Cotton Casual T-Shirt",
+    "description": "Premium quality 100% cotton t-shirt, perfect for casual wear. Soft fabric, breathable, and comfortable fit. Available in multiple colors.",
+    "mrpPrice": 1299,
+    "sellingPrice": 799,
+    "color": "Navy Blue",
+    "images": [
+      "https://example.com/images/tshirt-front.jpg",
+      "https://example.com/images/tshirt-back.jpg",
+      "https://example.com/images/tshirt-side.jpg"
+    ],
+    "category": "FASHION",
+    "category2": "MEN_CLOTHING",
+    "category3": "T_SHIRTS",
+    "sizes": "S, M, L, XL, XXL"
+  },
+
+  "product3_furniture": {
+    "title": "Modern Wooden Study Table",
+    "description": "Sturdy wooden study table with drawers. Perfect for home office or student room. Includes cable management system and spacious surface area.",
+    "mrpPrice": 8999,
+    "sellingPrice": 6499,
+    "color": "Brown Wood",
+    "images": [
+      "https://example.com/images/table-front.jpg",
+      "https://example.com/images/table-side.jpg",
+      "https://example.com/images/table-top.jpg"
+    ],
+    "category": "HOME",
+    "category2": "FURNITURE",
+    "category3": "TABLES",
+    "sizes": "120cm x 60cm"
+  },
+
+  "product4_shoes": {
+    "title": "Nike Air Max 270 Running Shoes",
+    "description": "Premium running shoes with Air Max cushioning technology. Lightweight, breathable, and designed for maximum comfort during workouts.",
+    "mrpPrice": 11999,
+    "sellingPrice": 8999,
+    "color": "Black/White",
+    "images": [
+      "https://example.com/images/shoe-left.jpg",
+      "https://example.com/images/shoe-right.jpg",
+      "https://example.com/images/shoe-bottom.jpg"
+    ],
+    "category": "FASHION",
+    "category2": "FOOTWEAR",
+    "category3": "RUNNING_SHOES",
+    "sizes": "7, 8, 9, 10, 11, 12"
+  }
+}

@@ -1,6 +1,9 @@
 package com.rishi.modal;
+//import javax.*;
+
 import jakarta.persistence.*;
 import lombok.*;
+
 @Entity
 @Getter
 @Setter

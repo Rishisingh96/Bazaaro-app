@@ -3,10 +3,7 @@ package com.rishi.controller;
 import com.rishi.modal.*;
 import com.rishi.response.ApiResponse;
 import com.rishi.response.PaymentLinkResponse;
-import com.rishi.service.PaymentService;
-import com.rishi.service.SellerReportService;
-import com.rishi.service.SellerService;
-import com.rishi.service.UserService;
+import com.rishi.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +17,7 @@ public class PaymentController {
     private final UserService userService;
     private final SellerService sellerService;
     private final SellerReportService sellerReportService;
+    private final TransactionService transactionService;
 
     @GetMapping("/{paymentId}")
     public ResponseEntity<ApiResponse> paymentSuccessHandler(
@@ -42,7 +40,7 @@ public class PaymentController {
         );
         if(paymentSuccess){
             for(Order order : paymentOrder.getOrders()){
-//                transactionService.createTransaction(order);
+                transactionService.createTransaction(order);
                 Seller seller = sellerService.getSellerById(order.getSellerId());
                 SellerReport report = sellerReportService.getSellerReport(seller);
                 report.setTotalOrders(report.getTotalOrders()+1);

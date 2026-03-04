@@ -6,9 +6,8 @@ import com.rishi.domain.USER_ROLE;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.*;
+import java.util.Set;
 
 
 @Entity

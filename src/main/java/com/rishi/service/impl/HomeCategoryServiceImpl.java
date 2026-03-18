@@ -1,7 +1,8 @@
-package com.rishi.service;
+package com.rishi.service.impl;
 
 import com.rishi.modal.HomeCategory;
 import com.rishi.repository.HomeCategoryRepository;
+import com.rishi.service.HomeCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

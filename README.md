@@ -95,9 +95,4 @@ EMAIL_PASSWORD=your_password
 ☁️ Cloud Storage for Files
 👨‍💻 Author
 
-Rishi Singh
-🎓 MCA | Full Stack Developer
 
-⭐ Show Your Support
-
-If you like this project, give it a ⭐ on GitHub!
